@@ -22,15 +22,26 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/login",  consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path="/login", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
         public ResponseEntity<?> login(@RequestBody Users user, HttpSession session)
         {
 
             System.out.println(" user " + user.getEmail());
             System.out.println(" user " + user.getPassword());
+            session.setAttribute("username",user.getEmail());
 
             return new ResponseEntity(userService.login(user),HttpStatus.OK);
         }
+
+    @PostMapping(value = "/logout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<?> logout(HttpSession session) {
+        System.out.println(session.getAttribute("username"));
+        System.out.println("logout done");
+        session.invalidate();
+        return  new ResponseEntity(HttpStatus.OK);
+    }
+
 
 
     }

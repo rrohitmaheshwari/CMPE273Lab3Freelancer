@@ -1,0 +1,65 @@
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# ideas
+/.idea
+/Server/.idea
+
+# dependencies
+/node_modules
+/Server/node_modules
+
+# testing
+/coverage
+
+# production
+/build
+
+# public images
+/Server/public/ProfileImage
+/Server/public/project_files
+/Server/uploads
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+### Backend ###
+
+/target/
+freelancerbackend/.mvn/*
+freelancerbackend/mvnw
+freelancerbackend/mvnw.cmd
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+
+FreelancerNodeServer/
+
