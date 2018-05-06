@@ -2,3 +2,9 @@ freelancerreact/.idea/*
 freelancerreact/node_modules/*
 freelancerreact/.gitignore
 freelancerreact/README.md
+
+freelancerbackend/.mvn/*
+freelancerbackend/.ides/*
+freelancerbackend/mvnw
+freelancerbackend/mvnw.cmd
+freelancerbackend/.gitignore
