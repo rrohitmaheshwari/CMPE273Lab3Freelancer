@@ -147,7 +147,7 @@ class PostProject extends React.Component {
                                 //     timeout: 1500,
                                 //     offset: 50
                                 // });
-                                window.alert(response.data.message);
+                                window.alert("Project Posted Sucessfully!");
                             },
                             error => {
                               //  dispatch(alertActions.projectPostError(error.data.message));

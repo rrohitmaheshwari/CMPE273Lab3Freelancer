@@ -59,4 +59,13 @@ public class ProjectService {
         }
         return null;
     }
+
+    public Set<Projects> getMyProjectDetails(String sessionUsername) {
+        System.out.println("Calling: getMyProjectDetails");
+        Set<Projects> projectEntities = projectRepository.findByEmpUsername(sessionUsername);
+        //  Set<Projects> projectEntities = projectRepository.findAllByEmpUsername(sessionUsername);
+
+
+        return projectEntities;
+    }
 }

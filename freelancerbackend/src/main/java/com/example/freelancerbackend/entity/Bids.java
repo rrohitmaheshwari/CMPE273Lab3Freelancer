@@ -1,5 +1,8 @@
 package com.example.freelancerbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 
@@ -16,8 +19,12 @@ public class Bids {
     private Long     days_req;
 
     @ManyToOne(fetch=FetchType.EAGER)
+
     @JoinColumn(name = "project_id")
+    @JsonBackReference
     private Projects projectEntity;
+
+
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "user_id")

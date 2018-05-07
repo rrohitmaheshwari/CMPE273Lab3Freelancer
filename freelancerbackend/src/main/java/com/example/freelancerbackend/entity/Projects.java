@@ -1,5 +1,9 @@
 package com.example.freelancerbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +35,7 @@ public class Projects {
     private String  freelancer_username;
 
     @OneToMany(mappedBy = "projectEntity", cascade=CascadeType.ALL)
+    @JsonManagedReference
     private Set<Bids> bids;
 
     public Projects() {};

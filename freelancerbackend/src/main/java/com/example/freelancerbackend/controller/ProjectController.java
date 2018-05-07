@@ -52,4 +52,22 @@ public class ProjectController {
     }
 
 
+
+
+
+    @RequestMapping(path="/getMyProjectDetails", method= RequestMethod.GET,consumes = MediaType.APPLICATION_JSON_VALUE,  produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getMyProjectDetails( HttpSession session) {
+
+        String sessionUsername = session.getAttribute("username").toString();
+
+
+
+    System.out.println("getMyProjectDetails");
+
+
+        return new ResponseEntity<>(projectService.getMyProjectDetails(sessionUsername), HttpStatus.OK);
+
+    }
+
+
 }

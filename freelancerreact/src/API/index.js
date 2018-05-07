@@ -271,7 +271,7 @@ function updateAboutMe(aboutMe) {
             'Accept': 'application/json'
         },
         credentials: 'include',
-        body: JSON.stringify({about: aboutMe})
+        body: JSON.stringify({about_me: aboutMe})
     };
     const endpoint = `${api}/user/updateAboutMe`;
     return fetch(endpoint, requestOptions).then(handleResponse);

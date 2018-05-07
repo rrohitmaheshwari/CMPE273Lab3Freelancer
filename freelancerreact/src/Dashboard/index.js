@@ -25,45 +25,45 @@ class DashboardPage extends React.Component {
         dispatch({type: "DASHBOARD"});
         const {user} = this.props;
 
-        RESTService.getMyProjectDetails(user.username)
-            .then(
-                response => {
-                    if (response.result.length > 0)
-                        this.setState({my_project_details_status: true});
-                    this.setState({my_project_details: response.result});
-                    console.log("this.state.my_project_details");
-                    console.log(this.state.my_project_details);
-                },
-                error => {
-                    console.log("Error/fetchHomeProject:");
-                    console.log(error);
-                    localStorage.removeItem('user');
-                    dispatch({type: "USERS_LOGOUT"});
-                    RESTService.logout();
-                    history.push('/Login');  //home page after session expire
-
-                }
-            );
-
-        RESTService.getMyBidDetails(user.user_id)
-            .then(
-                response => {
-                    if (response.result.length > 0)
-                        this.setState({my_bid_status: true});
-                    this.setState({my_bid_details: response.result});
-                    console.log("this.state.my_bid_details");
-                    console.log(this.state.my_bid_details);
-                },
-                error => {
-                    console.log("Error/fetchHomeProject:");
-                    console.log(error);
-                    localStorage.removeItem('user');
-                    dispatch({type: "USERS_LOGOUT"});
-                    RESTService.logout();
-                    history.push('/Login');  //home page after session expire
-
-                }
-            );
+        // RESTService.getMyProjectDetails(user.username)
+        //     .then(
+        //         response => {
+        //             if (response.result.length > 0)
+        //                 this.setState({my_project_details_status: true});
+        //             this.setState({my_project_details: response.result});
+        //             console.log("this.state.my_project_details");
+        //             console.log(this.state.my_project_details);
+        //         },
+        //         error => {
+        //             console.log("Error/fetchHomeProject:");
+        //             console.log(error);
+        //             localStorage.removeItem('user');
+        //             dispatch({type: "USERS_LOGOUT"});
+        //             RESTService.logout();
+        //             history.push('/Login');  //home page after session expire
+        //
+        //         }
+        //     );
+        //
+        // RESTService.getMyBidDetails(user.user_id)
+        //     .then(
+        //         response => {
+        //             if (response.result.length > 0)
+        //                 this.setState({my_bid_status: true});
+        //             this.setState({my_bid_details: response.result});
+        //             console.log("this.state.my_bid_details");
+        //             console.log(this.state.my_bid_details);
+        //         },
+        //         error => {
+        //             console.log("Error/fetchHomeProject:");
+        //             console.log(error);
+        //             localStorage.removeItem('user');
+        //             dispatch({type: "USERS_LOGOUT"});
+        //             RESTService.logout();
+        //             history.push('/Login');  //home page after session expire
+        //
+        //         }
+        //     );
 
     }
 
