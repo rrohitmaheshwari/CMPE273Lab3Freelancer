@@ -14,6 +14,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+import javax.transaction.Transactional;
+
+
 @Service
 public class UserService {
     @Autowired
@@ -62,6 +67,36 @@ public class UserService {
 
 
         return ob1;
+    }
+
+
+
+    @Transactional
+    public Users updateUserFields(String username, Users user, String fieldToUpdate){
+
+        Users updatedUser = userRepository.findByUsername(username);
+
+        System.out.println("updatedUser: " + updatedUser);
+        if(updatedUser == null) {
+            return null;
+        }
+
+        switch (fieldToUpdate) {
+            case "about_me": updatedUser.setAbout_me(user.getAbout_me());
+                break;
+            case "summary": updatedUser.setSummary(user.getSummary());
+                break;
+            case "skills": updatedUser.setSkills(user.getSkills());
+                break;
+            case "phone": updatedUser.setPhone(user.getPhone());
+                break;
+            case "name": updatedUser.setName(user.getName());
+                break;
+        }
+
+        updatedUser = userRepository.save(updatedUser);
+
+        return updatedUser;
     }
 
 }
