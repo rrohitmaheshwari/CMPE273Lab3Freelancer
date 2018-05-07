@@ -70,7 +70,7 @@ function login(username, password) {
             console.log(user.username);
             if (user && user.username) {
 
-                localStorage.setItem('user', JSON.stringify(user.user));
+                localStorage.setItem('user', JSON.stringify(user));
 
                 console.log("Local Storage Set");
             }

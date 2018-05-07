@@ -16,12 +16,28 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public Users login(Users testuser) {
-        return userRepository.findByUsernameAndPassword(testuser.getUsername(), testuser.getPassword());
+    public User login(Users testuser) {
+
+        Users foundUser = userRepository.findByUsernameAndPassword(testuser.getUsername(),testuser.getPassword());
+        if (foundUser == null) {
+            return null;
+        }
+        User response = Converter.mapUserEntityToResponse(foundUser);
+        return response;
+
+
     }
 
-    public Users getUser(Users testuser) {
-        return userRepository.findByUsername(testuser.getUsername());
+    public User getUser(String username) {
+       // return userRepository.findByUsername(testuser.getUsername());
+
+
+        Users foundUser = userRepository.findByUsername(username);
+        if (foundUser == null) {
+            return null;
+        }
+        User response = Converter.mapUserEntityToResponse(foundUser);
+        return response;
     }
 
     public int getHomeDetails(String testuser) {

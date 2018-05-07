@@ -1,12 +1,13 @@
 package com.example.freelancerbackend.service;
 
+import com.example.freelancerbackend.converters.Convertors;
 import com.example.freelancerbackend.entity.Projects;
 import com.example.freelancerbackend.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProjectService {
@@ -25,16 +26,13 @@ public class ProjectService {
         projectToUpdate.setStatus("Assigned");
         projectToUpdate.setFreelancer_username(project.getFreelancer_username());
         projectToUpdate = projectRepository.save(projectToUpdate);
-        if (projectToUpdate == null) {
-            return null;
-        }
         return projectToUpdate;
     }
 
     public Projects postProject(Projects project){
 
         Projects newProject = new Projects();
-        newProject.setEmp_username(project.getEmp_username());
+        newProject.setEmpUsername(project.getEmpUsername());
         newProject.setTitle(project.getTitle());
         newProject.setDescription(project.getDescription());
         newProject.setBudget_range(project.getBudget_range());
@@ -42,14 +40,23 @@ public class ProjectService {
         newProject.setStatus(project.getStatus());
         newProject.setComplete_by(project.getComplete_by());
         newProject.setFilenames(project.getFilenames());
-
         newProject = projectRepository.save(newProject);
-
-        if (newProject == null) {
-            return null;
-        }
-
         return newProject;
     }
 
+    public Map<String, Object> fetchOpenProjects(String sessionUsername) {
+        System.out.println("Calling:");
+        Set<Projects> projectEntities = projectRepository.findByEmpUsernameNotAndStatus(sessionUsername, "Open");
+      //  Set<Projects> projectEntities = projectRepository.findAllByEmpUsername(sessionUsername);
+
+
+        System.out.println("Size:");
+        System.out.println(projectEntities);
+        System.out.println(projectEntities.size());
+        if(projectEntities.size() > 0) {
+            return Convertors.mapOpenProjectsToResponse(projectEntities, "Open Projects fetched");
+
+        }
+        return null;
+    }
 }

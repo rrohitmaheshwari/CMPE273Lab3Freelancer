@@ -3,6 +3,8 @@ package com.example.freelancerbackend.controller;
 
 
 import com.example.freelancerbackend.entity.Users;
+import com.example.freelancerbackend.models.User;
+import com.example.freelancerbackend.service.ProjectService;
 import com.example.freelancerbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +26,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ProjectService projectService;
+
     Map<String, String> errorResponse = new HashMap<>();
 
     @RequestMapping(path="/users/authenticate", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -34,7 +39,7 @@ public class UserController {
             System.out.println(" pass " + user.getPassword());
             session.setAttribute("username",user.getUsername());
 
-            Users getuser=userService.login(user);
+            User getuser=userService.login(user);
 
 //            HttpStatus h=new HttpStatus(400,"The username and password you entered did not match our records. Please double-check and try again.");
 //            h.set
@@ -57,18 +62,44 @@ public class UserController {
         System.out.println(" username " + user.getUsername());
 
 
+        if (session.getAttribute("username") == null || session.getAttribute("username").toString().equals("")) {
 
-        return new ResponseEntity(userService.getUser(user),HttpStatus.OK);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        User response = userService.getUser(session.getAttribute("username").toString());
+
+        if (response == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity(response,HttpStatus.OK);
+
+     //   return new ResponseEntity(userService.getUser(user),HttpStatus.OK);
     }
 
 
+//
+//    @RequestMapping(path="/home/getdetails", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<?> home_getdetails( HttpSession session)
+//    {
+//        return new ResponseEntity(userService.getHomeDetails("rohit"),HttpStatus.OK);
+//    }
 
-    @RequestMapping(path="/home/getdetails", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> home_getdetails( HttpSession session)
-    {
-        return new ResponseEntity(userService.getHomeDetails("rohit"),HttpStatus.OK);
+    @RequestMapping(path="/home/getdetails", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> openProjects(HttpSession session) {
+
+        String sessionUsername = session.getAttribute("username").toString();
+        System.out.println("home.getdetails. Session username"+sessionUsername);
+
+        Map<String, Object> openProjectResponse = projectService.fetchOpenProjects(sessionUsername);
+
+     //   return new ResponseEntity(userService.getUser(sessionUsername),HttpStatus.OK);
+
+        return new ResponseEntity<>(openProjectResponse, HttpStatus.OK);
+
+
     }
-
 
 
     @RequestMapping(path="/getOtherUser", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,7 +109,7 @@ public class UserController {
         if (session.getAttribute("username") == null || session.getAttribute("username").toString().equals("")) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity(userService.getUser(user),HttpStatus.OK);
+        return new ResponseEntity(userService.getUser(user.getUsername()),HttpStatus.OK);
     }
 
     @PostMapping(value = "/user/logout")

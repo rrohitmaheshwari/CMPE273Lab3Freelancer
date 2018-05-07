@@ -10,17 +10,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.*;
 
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials="true")
-@RequestMapping(path="/") // This means URL's start with /user (after Application path)
+@RequestMapping(path="/project") // This means URL's start with /user (after Application path)
 public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
 
-    @RequestMapping(path="/project/postFreelancer", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+
+
+    @RequestMapping(path="/postFreelancer", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> postFreelancer(@RequestBody Projects project, HttpSession session)
     {
 
@@ -33,17 +36,19 @@ public class ProjectController {
         return new ResponseEntity(updatedProject,HttpStatus.OK);
     }
 
-    @RequestMapping(path="/project/post-project", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> postProject(@RequestBody Projects project, HttpSession session)
-    {
 
-        Projects newProject = projectService.postProject(project);
+ @RequestMapping(path="/post-project", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> postProject(@RequestBody Projects project, HttpSession session) {
 
-        if (newProject == null) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
+        String sessionUsername = session.getAttribute("username").toString();
 
-        return new ResponseEntity(newProject,HttpStatus.OK);
+
+        project.setEmpUsername(sessionUsername);
+
+     Projects postedProject = projectService.postProject(project);
+
+            return new ResponseEntity<>(postedProject, HttpStatus.OK);
+
     }
 
 

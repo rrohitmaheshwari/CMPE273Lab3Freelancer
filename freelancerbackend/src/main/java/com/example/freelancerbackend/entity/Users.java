@@ -7,7 +7,7 @@ public class Users {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-   private int user_id;
+   private Long user_id;
 
     private String username;
     private String  email;
@@ -20,11 +20,11 @@ public class Users {
     private String  looking_for;
 
 
-    public int getUser_id() {
+    public Long getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(Long user_id) {
         this.user_id = user_id;
     }
 

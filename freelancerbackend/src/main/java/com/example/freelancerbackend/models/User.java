@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class User {
 
-    private int user_id;
+    private Long user_id;
     private String username;
     private String email;
     private String password;
@@ -14,12 +14,23 @@ public class User {
     private String about_me;
     private String skills;
     private String looking_for;
+    private String  message;
 
-    public int getUser_id() {
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+
+
+    public Long getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(Long user_id) {
         this.user_id = user_id;
     }
 

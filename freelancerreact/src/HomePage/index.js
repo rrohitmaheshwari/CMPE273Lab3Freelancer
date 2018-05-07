@@ -76,7 +76,7 @@ class HomePage extends React.Component {
 
 
                                         {homecontent.payload &&
-                                        homecontent.payload.result.map((data) =>
+                                        homecontent.payload.map((data) =>
 
 
                                             <div className="ProjectFeed" key={data.project_id}>
@@ -106,7 +106,7 @@ class HomePage extends React.Component {
                                                 </div>
                                                 <div className="col-sm-2 col-sm-offset-0">
 
-                                                    <span className="shiftsmallleft"><a href={`/ViewProfilePage/${data.emp_username}`}>@{data.emp_username}</a></span>
+                                                    <span className="shiftsmallleft"><a href={`/ViewProfilePage/${data.empUsername}`}>@{data.empUsername}</a></span>
 
                                                 </div>
                                                 <div className="col-sm-3 col-sm-offset-0">

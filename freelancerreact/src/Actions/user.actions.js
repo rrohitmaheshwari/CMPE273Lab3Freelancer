@@ -32,8 +32,9 @@ function login(username, password) {
                     console.log("error");
                     console.log(error);
                     console.log(error);
+
                 //    dispatch(failure(error));
-                  //  dispatch(alertActions.error(error));
+                   dispatch(alertActions.error("The username and password you entered did not match our records. Please double-check and try again."));
                 }
             );
     };
@@ -98,8 +99,8 @@ function fetchHomeProject(user) {
                     console.log("user result");
                     console.log(result);
                     console.log("user result.result");
-                    console.log(result.result);
-                    dispatch({type: 'SET_DATA', result});
+                    console.log(result["projects"]);
+                    dispatch({type: 'SET_DATA', result: result["projects"]});
                     return result;
                 },
                 error => {
