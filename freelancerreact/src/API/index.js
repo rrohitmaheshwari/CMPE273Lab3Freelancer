@@ -1,9 +1,10 @@
 import axios from 'axios';
 
-const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:3001'
+const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080'
 
 
 axios.defaults.withCredentials = true;
+
 
 export const RESTService = {
 
@@ -37,7 +38,7 @@ function login(username, password) {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
 
         },
         credentials: 'include',
@@ -66,15 +67,15 @@ function login(username, password) {
 
             console.log("Then Users token:");
 
-            console.log(user.user.username);
-            if (user && user.user.username) {
+            console.log(user.username);
+            if (user && user.username) {
 
                 localStorage.setItem('user', JSON.stringify(user.user));
 
                 console.log("Local Storage Set");
             }
 
-            return user.user;
+            return user;
         });
 }
 
