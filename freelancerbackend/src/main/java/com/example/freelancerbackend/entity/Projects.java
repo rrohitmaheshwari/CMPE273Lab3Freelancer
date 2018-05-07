@@ -14,25 +14,25 @@ public class Projects {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int project_id;
+    private Long project_id;
     private String emp_username;
     private String title;
     private String description;
     private String budget_range;
     private String skills_req;
     private String status;
-    private Date complete_by;
+    private String complete_by;
     private String filenames;
     private String freelancer_username;
 
 
 
 
-    public int getProject_id() {
+    public Long getProject_id() {
         return project_id;
     }
 
-    public void setProject_id(int project_id) {
+    public void setProject_id(Long project_id) {
         this.project_id = project_id;
     }
 
@@ -84,11 +84,11 @@ public class Projects {
         this.status = status;
     }
 
-    public Date getComplete_by() {
+    public String getComplete_by() {
         return complete_by;
     }
 
-    public void setComplete_by(Date complete_by) {
+    public void setComplete_by(String complete_by) {
         this.complete_by = complete_by;
     }
 

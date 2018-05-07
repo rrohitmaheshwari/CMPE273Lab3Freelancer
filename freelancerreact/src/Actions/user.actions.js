@@ -29,9 +29,11 @@ function login(username, password) {
                     history.push('/HomePage');  //home page after login
                 },
                 error => {
+                    console.log("error");
                     console.log(error);
-                    dispatch(failure(error));
-                    dispatch(alertActions.error(error));
+                    console.log(error);
+                //    dispatch(failure(error));
+                  //  dispatch(alertActions.error(error));
                 }
             );
     };

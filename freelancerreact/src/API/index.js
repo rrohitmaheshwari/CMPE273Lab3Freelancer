@@ -52,7 +52,7 @@ function login(username, password) {
                 console.log("response.statusText");
 
                 if (!response.ok) {
-                    return Promise.reject(response.statusText);
+                    return Promise.reject(response.json());
                 }
                 console.log("*****response json");
 

@@ -5,15 +5,15 @@ package com.example.freelancerbackend.controller;
 import com.example.freelancerbackend.entity.Users;
 import com.example.freelancerbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.json.simple.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
+import java.util.*;
 
 
 @RestController
@@ -24,6 +24,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    Map<String, String> errorResponse = new HashMap<>();
+
     @RequestMapping(path="/users/authenticate", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
         public ResponseEntity<?> login(@RequestBody Users user, HttpSession session)
         {
@@ -32,7 +34,19 @@ public class UserController {
             System.out.println(" pass " + user.getPassword());
             session.setAttribute("username",user.getUsername());
 
-            return new ResponseEntity(userService.login(user),HttpStatus.OK);
+            Users getuser=userService.login(user);
+
+//            HttpStatus h=new HttpStatus(400,"The username and password you entered did not match our records. Please double-check and try again.");
+//            h.set
+            HttpHeaders h = new HttpHeaders();
+            h.add("statusText","The username and password you entered did not match our records. Please double-check and try again.");
+            if(getuser == null)
+            {
+                errorResponse.put("message", "The username and password you entered did not match our records. Please double-check and try again.");
+                return new ResponseEntity<>(errorResponse,h, HttpStatus.BAD_REQUEST);
+            }
+
+            return new ResponseEntity(getuser,HttpStatus.OK);
         }
 
 
@@ -52,12 +66,6 @@ public class UserController {
     @RequestMapping(path="/home/getdetails", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> home_getdetails( HttpSession session)
     {
-
-        //project_id	emp_username	title	description	budget_range	skills_req	status	niceDate	user_projects_project_id	bid_count
-
-      //  System.out.println(" username " + user.getUsername());
-
-
         return new ResponseEntity(userService.getHomeDetails("rohit"),HttpStatus.OK);
     }
 
@@ -67,12 +75,9 @@ public class UserController {
     public ResponseEntity<?> getOtherUser(@RequestBody Users user, HttpSession session)
     {
         System.out.println(" Logged in User's username: " + session.getAttribute("username"));
-
         if (session.getAttribute("username") == null || session.getAttribute("username").toString().equals("")) {
-
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-
         return new ResponseEntity(userService.getUser(user),HttpStatus.OK);
     }
 
@@ -80,9 +85,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> logout(HttpSession session) {
         System.out.println(session.getAttribute("username"));
-
         if (session.getAttribute("username") == null || session.getAttribute("username").toString().equals("")) {
-
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         System.out.println("logout done");
@@ -94,12 +97,9 @@ public class UserController {
     public ResponseEntity<?> updateAboutMe(@RequestBody Users user, HttpSession session)
     {
         System.out.println(" Logged in User's username: " + session.getAttribute("username"));
-
         if (session.getAttribute("username") == null || session.getAttribute("username").toString().equals("")) {
-
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-
         Users updatedUser = userService.updateUserFields(session.getAttribute("username").toString(), user, "about_me");
         if (updatedUser == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -111,17 +111,13 @@ public class UserController {
     public ResponseEntity<?> updateSummary(@RequestBody Users user, HttpSession session)
     {
         System.out.println(" Logged in User's username: " + session.getAttribute("username"));
-
         if (session.getAttribute("username") == null || session.getAttribute("username").toString().equals("")) {
-
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-
         Users updatedUser = userService.updateUserFields(session.getAttribute("username").toString(), user, "summary");
         if (updatedUser == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-
         return new ResponseEntity(updatedUser, HttpStatus.OK);
     }
 
@@ -129,17 +125,13 @@ public class UserController {
     public ResponseEntity<?> updateSkills(@RequestBody Users user, HttpSession session)
     {
         System.out.println(" Logged in User's username: " + session.getAttribute("username"));
-
         if (session.getAttribute("username") == null || session.getAttribute("username").toString().equals("")) {
-
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-
         Users updatedUser = userService.updateUserFields(session.getAttribute("username").toString(), user, "skills");
         if (updatedUser == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-
         return new ResponseEntity(updatedUser, HttpStatus.OK);
     }
 
@@ -148,17 +140,13 @@ public class UserController {
     public ResponseEntity<?> updatePhone(@RequestBody Users user, HttpSession session)
     {
         System.out.println(" Logged in User's username: " + session.getAttribute("username"));
-
         if (session.getAttribute("username") == null || session.getAttribute("username").toString().equals("")) {
-
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-
         Users updatedUser = userService.updateUserFields(session.getAttribute("username").toString(), user, "phone");
         if (updatedUser == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-
         return new ResponseEntity(updatedUser, HttpStatus.OK);
     }
 
@@ -166,17 +154,13 @@ public class UserController {
     public ResponseEntity<?> updateName(@RequestBody Users user, HttpSession session)
     {
         System.out.println(" Logged in User's username: " + session.getAttribute("username"));
-
         if (session.getAttribute("username") == null || session.getAttribute("username").toString().equals("")) {
-
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-
         Users updatedUser = userService.updateUserFields(session.getAttribute("username").toString(), user, "name");
         if (updatedUser == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-
         return new ResponseEntity(updatedUser, HttpStatus.OK);
     }
 
