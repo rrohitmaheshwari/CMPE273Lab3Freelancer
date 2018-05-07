@@ -21,6 +21,17 @@ public class Project {
     private String  freelancer_username;
     private String  message;
     private Integer bid_count;
+    private Float averageBid;
+
+    public Float getAverageBid() {
+        return averageBid;
+    }
+
+    public void setAverageBid(Float averageBid) {
+        this.averageBid = averageBid;
+    }
+
+
 
     public Long getProject_id() { return project_id; }
     @JsonInclude(JsonInclude.Include.NON_EMPTY) public void setProject_id(Long project_id) { this.project_id = project_id; }

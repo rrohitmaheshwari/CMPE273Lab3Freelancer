@@ -19,7 +19,6 @@ public class Bids {
     private Long     days_req;
 
     @ManyToOne(fetch=FetchType.EAGER)
-
     @JoinColumn(name = "project_id")
     @JsonBackReference
     private Projects projectEntity;

@@ -13,7 +13,7 @@ public interface ProjectRepository extends CrudRepository<Projects, Long>{
     //Projects find(int project_id);
    Set<Projects> findByEmpUsernameNotAndStatus(String emp_username, String status);
 
-   Set<Projects> findByEmpUsername(String emp_username);
+   Set<Projects> findByEmpUsernameAndStatusNot(String emp_username,String status);
   // Set<Projects> fin(String emp_username);
 
 }

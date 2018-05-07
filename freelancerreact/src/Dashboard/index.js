@@ -25,26 +25,29 @@ class DashboardPage extends React.Component {
         dispatch({type: "DASHBOARD"});
         const {user} = this.props;
 
-        // RESTService.getMyProjectDetails(user.username)
-        //     .then(
-        //         response => {
-        //             if (response.result.length > 0)
-        //                 this.setState({my_project_details_status: true});
-        //             this.setState({my_project_details: response.result});
-        //             console.log("this.state.my_project_details");
-        //             console.log(this.state.my_project_details);
-        //         },
-        //         error => {
-        //             console.log("Error/fetchHomeProject:");
-        //             console.log(error);
-        //             localStorage.removeItem('user');
-        //             dispatch({type: "USERS_LOGOUT"});
-        //             RESTService.logout();
-        //             history.push('/Login');  //home page after session expire
-        //
-        //         }
-        //     );
-        //
+        RESTService.getMyProjectDetails(user.username)
+            .then(
+                response => {
+                    console.log("DASHBOARD tab1 resp");
+                    console.log(response["projects"]);
+                    console.log(response.result);
+                    if (response["projects"].length > 0)
+                        this.setState({my_project_details_status: true});
+                    this.setState({my_project_details: response["projects"]});
+                    console.log("this.state.my_project_details");
+                    console.log(this.state.my_project_details);
+                },
+                error => {
+                    console.log("Error/fetchHomeProject:");
+                    console.log(error);
+                    localStorage.removeItem('user');
+                    dispatch({type: "USERS_LOGOUT"});
+                    RESTService.logout();
+                    history.push('/Login');  //home page after session expire
+
+                }
+            );
+
         // RESTService.getMyBidDetails(user.user_id)
         //     .then(
         //         response => {
@@ -146,8 +149,8 @@ class DashboardPage extends React.Component {
                                             <tr key={data.project_id}>
                                                 <td><img className="FreeLancerIconDashboard" src={Icon} alt="FreelancerIcon"/>
                                                     <a href={`/HireProject?project_id=${data.project_id}`}>{data.title}</a></td>
-                                                <td>{Number(data.avg_bid).toFixed(2)}</td>
-                                                <td>{data.complete_by_shortdate}</td>
+                                                <td>{Number(data.averageBid).toFixed(2)}</td>
+                                                <td>{data.complete_by}</td>
                                                 <td>{data.status}</td>
                                                 <td>{
                                                     data.freelancer_username &&

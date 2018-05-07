@@ -110,4 +110,34 @@ public class Convertors {
     public static String fetchSessionUsername() {
         return (String)((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession().getAttribute("username");
     }
+
+    public static Map<String, Object> mapMyProjectsToResponse(Set<Projects> projectEntities, String message) {
+
+        Set<Project> projectSetResponse = new HashSet<>();
+
+        projectEntities.stream()
+                .forEach(projectEntity -> {
+                    Project project = new Project();
+                    project.setProject_id    ( projectEntity.getProject_id() );
+                    project.setTitle         ( projectEntity.getTitle() );
+                    project.setDescription   ( projectEntity.getDescription() );
+                    project.setSkills_req    ( projectEntity.getSkills_req() );
+                    project.setEmpUsername  ( projectEntity.getEmpUsername() );
+                    project.setBudget_range  ( projectEntity.getBudget_range() );
+                    project.setStatus        ( projectEntity.getStatus() );
+                    project.setComplete_by   ( projectEntity.getComplete_by() );
+                    float averageBid = 0;
+                    for (com.example.freelancerbackend.entity.Bids bidEntity : projectEntity.getBids()) {
+                        averageBid += Float.parseFloat(bidEntity.getBid_price());
+                    }
+                    project.setAverageBid(averageBid / projectEntity.getBids().size());
+                    projectSetResponse.add(project);
+                });
+
+        Map<String, Object> openProjectResponse = new HashMap<>();
+        openProjectResponse.put("projects", projectSetResponse);
+        openProjectResponse.put("message", message);
+
+        return openProjectResponse;
+    }
 }

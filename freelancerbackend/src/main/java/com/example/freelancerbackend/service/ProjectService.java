@@ -2,6 +2,7 @@ package com.example.freelancerbackend.service;
 
 import com.example.freelancerbackend.converters.Convertors;
 import com.example.freelancerbackend.entity.Projects;
+import com.example.freelancerbackend.helpers.Converter;
 import com.example.freelancerbackend.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,12 +61,18 @@ public class ProjectService {
         return null;
     }
 
-    public Set<Projects> getMyProjectDetails(String sessionUsername) {
-        System.out.println("Calling: getMyProjectDetails");
-        Set<Projects> projectEntities = projectRepository.findByEmpUsername(sessionUsername);
+    public Map<String, Object> getMyProjectDetails(String sessionUsername) {
+
+        Set<Projects> projectEntities = projectRepository.findByEmpUsernameAndStatusNot(sessionUsername, "Closed");
+
+        System.out.println("SizeOfProjectEntities:");
+        System.out.println(projectEntities);
+        System.out.println(projectEntities.size());
+        if(projectEntities != null && projectEntities.size() > 0) {
+            return Convertors.mapMyProjectsToResponse(projectEntities, "Fetched Successfully");
+        }
         //  Set<Projects> projectEntities = projectRepository.findAllByEmpUsername(sessionUsername);
 
-
-        return projectEntities;
+        return null;
     }
 }

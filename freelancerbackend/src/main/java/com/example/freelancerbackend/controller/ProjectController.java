@@ -58,14 +58,15 @@ public class ProjectController {
     @RequestMapping(path="/getMyProjectDetails", method= RequestMethod.GET,consumes = MediaType.APPLICATION_JSON_VALUE,  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getMyProjectDetails( HttpSession session) {
 
-        String sessionUsername = session.getAttribute("username").toString();
+        System.out.println(" username: " + session.getAttribute("username"));
 
+        if (session.getAttribute("username") == null || session.getAttribute("username").toString().equals("")) {
 
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        Map<String, Object> openProjectResponse = projectService.getMyProjectDetails(session.getAttribute("username").toString());
 
-    System.out.println("getMyProjectDetails");
-
-
-        return new ResponseEntity<>(projectService.getMyProjectDetails(sessionUsername), HttpStatus.OK);
+        return new ResponseEntity( openProjectResponse, HttpStatus.OK);
 
     }
 
