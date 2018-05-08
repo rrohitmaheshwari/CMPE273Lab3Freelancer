@@ -155,9 +155,16 @@ public class ProjectService {
 
         newBid.setProjectEntity(foundProject);
 
+        Bids foundBid = bidsRepository.findByUserEntityAndProjectEntity(foundUser, foundProject);
+
+        if (foundBid != null) {
+            bidsRepository.delete(foundBid);
+        }
+
         newBid.setBid_price(bid.getBid_price());
         newBid.setDays_req(bid.getDays_req());
 
+        System.out.println("newBid: " + newBid);
         newBid = bidsRepository.save(newBid);
 
         if (newBid == null) {
