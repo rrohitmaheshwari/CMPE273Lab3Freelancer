@@ -228,8 +228,7 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-      //  String fileName = file.getOriginalFilename();
-        //modelMap.addAttribute("fileName", fileName);
+
         return "fileupload";
 
 

@@ -6,6 +6,7 @@ import {userActions} from "../Actions";
 import ContentEditable from 'react-contenteditable';
 import $ from "jquery";
 import {RESTService} from "../API";
+import {history} from "../Helpers";
 
 //import Modal from 'react-modal';
 
@@ -90,6 +91,7 @@ class MyProfile extends React.Component {
         RESTService.sendFile(this.imgFile);
         const { user } = this.props;
         this.getProfileFromServer(user.username);
+        window.location.reload();
     };
 
     handleChangePhone = (event) => {
@@ -228,7 +230,7 @@ class MyProfile extends React.Component {
                                             <div className="profile-avatar-image-uploader">
                                                 <div className="profile-avatar-image-wrapper">
                                                     <div className="profile-avatar-image-done">
-                                                        <img className="avatar-image" src={imgSrc} alt="Profile"/>
+                                                        <img className="avatar-image"    src={  "/ProfileImage/"+user.username+".jpg"} onError = {(e) => {e.target.src = staticImg}}/>
                                                         <a className="picture-upload-trigger" data-toggle="modal" data-target="#myModal" href="#">
                                                             <span className="picture-upload-trigger-inner fa fa-camera">
                                                             </span>
