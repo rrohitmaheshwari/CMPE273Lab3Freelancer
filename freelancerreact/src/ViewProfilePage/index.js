@@ -62,7 +62,7 @@ class ViewProfilePage extends React.Component {
                                             <div className="profile-avatar-image-uploader">
                                                 <div className="profile-avatar-image-wrapper">
                                                     <div className="profile-avatar-image-done" >
-                                                        <img className="avatar-image" src={imgSrc} alt="Profile"/>
+                                                        <img className="avatar-image"   src={`/ProfileImage/${profileUser.username}.jpg`} onError={(e)=>{e.target.src=staticImg}} alt="Profile"/>
                                                     </div>
                                                 </div>
                                             </div>
