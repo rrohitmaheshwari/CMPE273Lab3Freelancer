@@ -155,17 +155,24 @@ function getBidHeader(project_id) {
 
 }
 
+//
+// function postBid(data) {
+//     const requestOptions = {
+//         method: 'POST',
+//         headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+//         credentials: 'include',
+//         body: JSON.stringify({data})
+//     };
+//     return fetch(`${api}/project/postbiddata`, requestOptions).then(handleResponse);
+//
+// }
+
 
 function postBid(data) {
-    const requestOptions = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-        credentials: 'include',
-        body: JSON.stringify({data})
-    };
-    return fetch(`${api}/project/postbiddata`, requestOptions).then(handleResponse);
-
+    let postProjectUrl = api + '/project/postbiddata';
+    return axiosPost(postProjectUrl, data);
 }
+
 
 function postFreelancer(data) {
     const requestOptions = {

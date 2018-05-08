@@ -1,5 +1,6 @@
 package com.example.freelancerbackend.entity;
 import javax.persistence.*;
+import java.util.*;
 
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "users")
@@ -19,6 +20,18 @@ public class Users {
     private String  skills;
     private String  looking_for;
 
+
+
+    @OneToMany(mappedBy = "userEntity", cascade=CascadeType.ALL)
+    private Set<Bids> bids;
+
+    public Set<Bids> getBids() {
+        return bids;
+    }
+
+    public void setBids(Set<Bids> bids) {
+        this.bids = bids;
+    }
 
     public Long getUser_id() {
         return user_id;

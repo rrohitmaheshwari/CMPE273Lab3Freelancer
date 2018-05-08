@@ -140,4 +140,65 @@ public class Convertors {
 
         return openProjectResponse;
     }
+
+    public static Map<String, Object> mapMyBidsToResponse(Set<com.example.freelancerbackend.entity.Bids> bidEntities, String message) {
+
+        Set<com.example.freelancerbackend.models.Bids> bidSetResponse = new HashSet<>();
+
+        bidEntities.stream()
+                .forEach(bidEntity -> {
+
+                    com.example.freelancerbackend.models.Bids bid = new com.example.freelancerbackend.models.Bids();
+                    Projects project = bidEntity.getProjectEntity();
+
+                    bid.setId(project.getProject_id());
+                    bid.setBid_price(bidEntity.getBid_price());
+                    bid.setProjectTitle(project.getTitle());
+                    bid.setProjectEmployer(project.getEmpUsername());
+                    bid.setProjectTitle(project.getTitle());
+                    bid.setProjectStatus(project.getStatus());
+                    bid.setProject_id(project.getProject_id());
+                    float averageBid = 0;
+                    for (com.example.freelancerbackend.entity.Bids allBidEntity : project.getBids()) {
+                        averageBid += Float.parseFloat(allBidEntity.getBid_price());
+                    }
+                    bid.setProjectAverageBid(averageBid / project.getBids().size());
+
+                    bidSetResponse.add(bid);
+                });
+
+        Map<String, Object> openProjectResponse = new HashMap<>();
+        openProjectResponse.put("projects", bidSetResponse);
+        openProjectResponse.put("message", message);
+
+        return openProjectResponse;
+    }
+
+    public static Map<String, Object> mapBidHeaderToResponse(Projects projectEntity, String message) {
+
+        Set<Project> projectSetResponse = new HashSet<>();
+
+        Project project = new Project();
+        project.setProject_id    ( projectEntity.getProject_id() );
+        project.setTitle         ( projectEntity.getTitle() );
+        project.setDescription   ( projectEntity.getDescription() );
+        project.setSkills_req    ( projectEntity.getSkills_req() );
+        project.setEmpUsername  ( projectEntity.getEmpUsername() );
+        project.setBid_count     ( projectEntity.getBids().size() );
+        project.setBudget_range  ( projectEntity.getBudget_range() );
+        project.setStatus        ( projectEntity.getStatus() );
+        project.setComplete_by   ( projectEntity.getComplete_by() );
+        float averageBid = 0;
+        for (com.example.freelancerbackend.entity.Bids bidEntity : projectEntity.getBids()) {
+            averageBid += Float.parseFloat(bidEntity.getBid_price());
+        }
+        project.setAverageBid(averageBid / projectEntity.getBids().size());
+        projectSetResponse.add(project);
+
+        Map<String, Object> openProjectResponse = new HashMap<>();
+        openProjectResponse.put("projects", projectSetResponse);
+        openProjectResponse.put("message", message);
+
+        return openProjectResponse;
+    }
 }

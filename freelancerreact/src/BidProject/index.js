@@ -20,7 +20,7 @@ class BidProject extends React.Component {
                 "description": '',
                 "budget_range": '',
                 "skills_req": '',
-                "complete_by_shortdate": '',
+                "complete_by": '',
                 "filenames": '',
                 "name": ''
             },
@@ -28,6 +28,8 @@ class BidProject extends React.Component {
             bid_header: {
                 "bid_count": '',
                 "average_bid": '',
+                "complete_by":'',
+                "description": '',
             },
             showtable: false,
             bid_price: '0',
@@ -77,35 +79,37 @@ class BidProject extends React.Component {
 
         const {dispatch} = this.props;
 
-
-        RESTService.getBidDetails(Project_ID)
-            .then(
-                response => {
-
-                    this.setState({"bid_table_data": response.result});
-                    if (response.result.length > 0)
-                        this.setState({"showtable": true});
-                },
-                error => {
-                    console.log("Error/fetchHomeProject:");
-                    console.log(error);
-                    localStorage.removeItem('user');
-                    dispatch({type: "USERS_LOGOUT"});
-                    RESTService.logout();
-                    history.push('/Login');  //home page after session expire
-
-                }
-            );
+        //
+        // RESTService.getBidDetails(Project_ID)
+        //     .then(
+        //         response => {
+        //
+        //             this.setState({"bid_table_data": response.result});
+        //             if (response.result.length > 0)
+        //                 this.setState({"showtable": true});
+        //         },
+        //         error => {
+        //             console.log("Error/fetchHomeProject:");
+        //             console.log(error);
+        //             localStorage.removeItem('user');
+        //             dispatch({type: "USERS_LOGOUT"});
+        //             RESTService.logout();
+        //             history.push('/Login');  //home page after session expire
+        //
+        //         }
+        //     );
 
         RESTService.getprojectdetails(Project_ID)
             .then(
                 response => {
+            console.log("mid table");
+            console.log(response);
 
-                    if (response.result.length === 0) {
+                    if (response.length === 0) {
                         dispatch({type: "HOME"});
                         history.push('/HomePage');  //home page if no project found
                     }
-                    this.setState({"project_details": response.result[0]});
+                    this.setState({"project_details": response});
                     if(this.state.project_details.filenames && this.state.project_details.filenames.indexOf(",") > 0)
                     this.setState({"filenames": this.state.project_details.filenames.split(",")});
                     else
@@ -128,8 +132,8 @@ class BidProject extends React.Component {
         RESTService.getBidHeader(Project_ID)
             .then(
                 response => {
-                    this.setState({"bid_header": response.result[0]});
-                    console.log(this.state.project_details);
+                    this.setState({bid_header: response["projects"][0]});
+                    console.log(response["projects"][0]);
                 },
                 error => {
                     console.log("Error/fetchHomeProject:");
@@ -223,19 +227,19 @@ class BidProject extends React.Component {
 
                                         <span>Avg Bid</span>
                                         <br/><span
-                                        className="ProjectHeaderValue">{Number(this.state.bid_header.average_bid).toFixed(2)}$</span>
+                                        className="ProjectHeaderValue">{Number(this.state.bid_header.averageBid).toFixed(2)}$</span>
                                     </div>
                                     <div className="col-sm-2 col-sm-offset-0" id="ProjectDetailBox">
 
 
                                         <span>Project Budget </span>
                                         <br/><span
-                                        className="ProjectHeaderValue">{this.state.project_details.budget_range}</span>
+                                        className="ProjectHeaderValue">{this.state.bid_header.budget_range}</span>
                                     </div>
                                     <div className="col-sm-5 col-sm-offset-0" id="ProjectDetailBoxEnd">
                                         <span>Expected</span>
                                         <br/><span
-                                        className="ProjectHeaderValue">{this.state.project_details.complete_by_shortdate}</span>
+                                        className="ProjectHeaderValue">{this.state.bid_header.complete_by}</span>
 
                                     </div>
 
@@ -361,7 +365,7 @@ class BidProject extends React.Component {
                                         <br/>
                                         <span className="ProjectTitleSubheading"> Employer</span>
                                         <br/>
-                                        <span>{this.state.project_details.name}<br/><a href={`/ViewProfilePage/${this.state.project_details.emp_username}`}>@{this.state.project_details.emp_username}</a></span>
+                                        <span>{this.state.project_details.name}<br/><a href={`/ViewProfilePage/${this.state.project_details.empUsername}`}>@{this.state.project_details.empUsername}</a></span>
                                         <br/>
                                         <br/>
                                         <span className="ProjectTitleSubheading"> Skills Required</span>
@@ -372,7 +376,7 @@ class BidProject extends React.Component {
                                         <span>{
                                             this.state.filenames.map((data) =>
                                               <div key={data}>
-                                               <a target="_blank" href={`http://localhost:3001/project_files/${this.state.project_details.emp_username}/${data}`}>
+                                               <a target="_blank" href={`http://localhost:3001/project_files/${this.state.project_details.empUsername}/${data}`}>
                                                   {data}
                                                 </a>
                                                 <br/>

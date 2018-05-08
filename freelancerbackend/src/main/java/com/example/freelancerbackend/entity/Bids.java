@@ -1,6 +1,7 @@
 package com.example.freelancerbackend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -27,6 +28,7 @@ public class Bids {
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private Users userEntity;
 
 

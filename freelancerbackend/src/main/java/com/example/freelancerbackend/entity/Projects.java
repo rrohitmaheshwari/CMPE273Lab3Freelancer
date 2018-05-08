@@ -35,7 +35,7 @@ public class Projects {
     private String  freelancer_username;
 
     @OneToMany(mappedBy = "projectEntity", cascade=CascadeType.ALL)
-    @JsonManagedReference
+    @JsonIgnore
     private Set<Bids> bids;
 
     public Projects() {};

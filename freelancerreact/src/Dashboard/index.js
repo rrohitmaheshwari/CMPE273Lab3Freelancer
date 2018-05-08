@@ -28,9 +28,7 @@ class DashboardPage extends React.Component {
         RESTService.getMyProjectDetails(user.username)
             .then(
                 response => {
-                    console.log("DASHBOARD tab1 resp");
-                    console.log(response["projects"]);
-                    console.log(response.result);
+
                     if (response["projects"].length > 0)
                         this.setState({my_project_details_status: true});
                     this.setState({my_project_details: response["projects"]});
@@ -48,25 +46,29 @@ class DashboardPage extends React.Component {
                 }
             );
 
-        // RESTService.getMyBidDetails(user.user_id)
-        //     .then(
-        //         response => {
-        //             if (response.result.length > 0)
-        //                 this.setState({my_bid_status: true});
-        //             this.setState({my_bid_details: response.result});
-        //             console.log("this.state.my_bid_details");
-        //             console.log(this.state.my_bid_details);
-        //         },
-        //         error => {
-        //             console.log("Error/fetchHomeProject:");
-        //             console.log(error);
-        //             localStorage.removeItem('user');
-        //             dispatch({type: "USERS_LOGOUT"});
-        //             RESTService.logout();
-        //             history.push('/Login');  //home page after session expire
-        //
-        //         }
-        //     );
+        RESTService.getMyBidDetails(user.user_id)
+            .then(
+                response => {
+                    console.log("DASHBOARD tab2 resp");
+                    console.log(response["projects"]);
+                    console.log(response.result);
+
+                    if (response["projects"].length > 0)
+                        this.setState({my_bid_status: true});
+                    this.setState({my_bid_details: response["projects"]});
+                    console.log("this.state.my_bid_details");
+                    console.log(this.state.my_bid_details);
+                },
+                error => {
+                    console.log("Error/fetchHomeProject:");
+                    console.log(error);
+                    localStorage.removeItem('user');
+                    // dispatch({type: "USERS_LOGOUT"});
+                    // RESTService.logout();
+                    history.push('/Login');  //home page after session expire
+
+                }
+            );
 
     }
 
@@ -229,11 +231,11 @@ class DashboardPage extends React.Component {
                                         {this.state.my_bid_details.map((data) =>
                                             <tr key={data.project_id}>
                                                 <td><img className="FreeLancerIconDashboard" src={Icon} alt="FreelancerIcon"/>
-                                                    <a href={`/BidProject?project_id=${data.project_id}`}>{data.title}</a></td>
-                                                <td><a href={`/ViewProfilePage/${data.emp_username}`}>@{data.emp_username}</a></td>
-                                                <td>{Number(data.avg_bid).toFixed(2)}</td>
+                                                    <a href={`/BidProject?project_id=${data.project_id}`}>{data.projectTitle}</a></td>
+                                                <td><a href={`/ViewProfilePage/${data.projectEmployer}`}>@{data.projectEmployer}</a></td>
+                                                <td>{Number(data.projectAverageBid).toFixed(2)}</td>
                                                 <td>{data.bid_price}</td>
-                                                <td>{data.status}</td>
+                                                <td>{data.projectStatus}</td>
                                             </tr>
                                         )
                                         }

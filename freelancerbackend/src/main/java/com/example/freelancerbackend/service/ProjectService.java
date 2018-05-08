@@ -1,9 +1,13 @@
 package com.example.freelancerbackend.service;
 
 import com.example.freelancerbackend.converters.Convertors;
+import com.example.freelancerbackend.entity.Bids;
 import com.example.freelancerbackend.entity.Projects;
+import com.example.freelancerbackend.entity.Users;
 import com.example.freelancerbackend.helpers.Converter;
+import com.example.freelancerbackend.repository.BidRepository;
 import com.example.freelancerbackend.repository.ProjectRepository;
+import com.example.freelancerbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +18,10 @@ import java.util.*;
 public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private BidRepository bidsRepository;
 
     public Projects postFreelancer(Projects project){
 
@@ -75,4 +83,88 @@ public class ProjectService {
 
         return null;
     }
+
+    public Map<String, Object> getMyBidDetails(String user_id) {
+
+        Optional<Users> user = userRepository.findById(Long.parseLong(user_id));
+
+        if ( !user.isPresent()) {
+            return null;
+        }
+
+        Users foundUser = user.get();
+
+        Set<Bids> myBids = foundUser.getBids();
+
+        System.out.println("myBids:");
+        System.out.println(myBids);
+        System.out.println(myBids.size());
+        if(myBids != null && myBids.size() > 0) {
+            return Convertors.mapMyBidsToResponse(myBids, "Fetched Successfully");
+        }
+
+        return null;
+    }
+
+    public Map<String, Object> getBidHeader(Long project_id) {
+
+        Optional<Projects> projectOpt = projectRepository.findById(project_id);
+
+        if ( !projectOpt.isPresent()) {
+            return null;
+        }
+
+        Projects projectDetails = projectOpt.get();
+        System.out.println(projectDetails);
+
+        if(projectDetails != null) {
+            return Convertors.mapBidHeaderToResponse(projectDetails, "Fetched Successfully");
+        }
+
+        return null;
+    }
+
+    public Projects fetchProjectDetails(Long project_id) {
+
+        Optional<Projects> projectOpt = projectRepository.findById(project_id);
+
+        if ( !projectOpt.isPresent()) {
+            return null;
+        }
+
+        Projects projectDetails = projectOpt.get();
+        System.out.println(projectDetails);
+
+        if(projectDetails != null) {
+            return projectDetails;
+        }
+
+        return null;
+    }
+
+    public Bids postBidData(com.example.freelancerbackend.models.Bids bid){
+
+        Bids newBid = new Bids();
+        Optional<Users> u = userRepository.findById(bid.getUser_id());
+        Users foundUser = u.get();
+
+        newBid.setUserEntity(foundUser);
+
+        Optional<Projects> p = projectRepository.findById(bid.getProject_id());
+        Projects foundProject = p.get();
+
+        newBid.setProjectEntity(foundProject);
+
+        newBid.setBid_price(bid.getBid_price());
+        newBid.setDays_req(bid.getDays_req());
+
+        newBid = bidsRepository.save(newBid);
+
+        if (newBid == null) {
+            return null;
+        }
+
+        return newBid;
+    }
+
 }

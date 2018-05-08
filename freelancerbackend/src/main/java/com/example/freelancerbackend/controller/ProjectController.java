@@ -2,6 +2,7 @@ package com.example.freelancerbackend.controller;
 
 import com.example.freelancerbackend.entity.Projects;
 
+import com.example.freelancerbackend.models.Bids;
 import com.example.freelancerbackend.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -70,5 +71,80 @@ public class ProjectController {
 
     }
 
+    @RequestMapping(path="/getMyBidDetails", method= RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getMyBidDetails( @RequestParam("user_id") String user_id, HttpSession session)
+    {
 
+        System.out.println(" username: " + session.getAttribute("username"));
+
+        if (session.getAttribute("username") == null || session.getAttribute("username").toString().equals("")) {
+
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        System.out.println(" user_id: " + user_id);
+
+        Map<String, Object> bidDetails = projectService.getMyBidDetails(user_id);
+        return new ResponseEntity( bidDetails, HttpStatus.OK);
+    }
+
+    @RequestMapping(path="/getbidheader", method= RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getBidHeader( @RequestParam("project_id") String project_id, HttpSession session)
+    {
+
+        System.out.println(" username: " + session.getAttribute("username"));
+
+        if (session.getAttribute("username") == null || session.getAttribute("username").toString().equals("")) {
+
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        System.out.println(" project_id: " + project_id);
+
+        Long id = Long.parseLong(project_id);
+        Map<String, Object> bidHeader = projectService.getBidHeader(id);
+        return new ResponseEntity( bidHeader, HttpStatus.OK);
+    }
+
+    @RequestMapping(path="/getprojectdetails", method= RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getProjectDetails(@RequestParam("project_id") String project_id, HttpSession session)
+    {
+
+        System.out.println(" username: " + session.getAttribute("username"));
+
+        if (session.getAttribute("username") == null || session.getAttribute("username").toString().equals("")) {
+
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        Long id = Long.parseLong(project_id);
+        Projects projectDetailsResponse = projectService.fetchProjectDetails(id);
+
+        if (projectDetailsResponse == null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity(projectDetailsResponse,HttpStatus.OK);
+    }
+
+
+    @RequestMapping(path="/postbiddata", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> postBidData(@RequestBody com.example.freelancerbackend.models.Bids bid, HttpSession session)
+    {
+
+
+        System.out.println("asdapostbiddatasd");
+
+        System.out.println(bid.getBid_price());
+        System.out.println(bid.getDays_req());
+        System.out.println(bid.getProject_id());
+        System.out.println(bid.getUser_id());
+
+        com.example.freelancerbackend.entity.Bids newBid = projectService.postBidData(bid);
+        if (newBid == null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity(newBid,HttpStatus.OK);
+    }
 }
