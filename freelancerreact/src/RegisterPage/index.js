@@ -10,8 +10,8 @@ class RegisterPage extends React.Component {
 
         this.state = {
             user: {
-                Name: '',
-                Email: '',
+                name: '',
+                email: '',
                 username: '',
                 password: '',
                 looking_for: '',
@@ -67,7 +67,7 @@ class RegisterPage extends React.Component {
 
             }
 
-            else if (user.Name && user.Email && user.username && user.password) {
+            else if (user.name && user.email && user.username && user.password) {
                 dispatch(userActions.register(user));       ///try w_ dispatch
             }
         }
@@ -101,19 +101,19 @@ class RegisterPage extends React.Component {
                         }
 
                         <form name="form" onSubmit={this.handleSubmit}>
-                            <div className={'form-group' + (submitted && !user.Name ? ' has-error' : '')}>
+                            <div className={'form-group' + (submitted && !user.name ? ' has-error' : '')}>
                                 <label htmlFor="firstName">Name</label>
-                                <input type="text" className="form-control" name="Name" value={user.Name}
+                                <input type="text" className="form-control" name="name" value={user.name}
                                        onChange={this.handleChange}/>
-                                {submitted && !user.Name &&
+                                {submitted && !user.name &&
                                 <div className="help-block">Name is required</div>
                                 }
                             </div>
-                            <div className={'form-group' + (submitted && !user.Email ? ' has-error' : '')}>
+                            <div className={'form-group' + (submitted && !user.email ? ' has-error' : '')}>
                                 <label htmlFor="Email">Email</label>
-                                <input type="email" className="form-control" name="Email" value={user.Email}
+                                <input type="email" className="form-control" name="email" value={user.email}
                                        onChange={this.handleChange}/>
-                                {submitted && !user.Email &&
+                                {submitted && !user.email &&
                                 <div className="help-block">Email is required</div>
                                 }
                             </div>

@@ -52,6 +52,8 @@ public class UserService {
         newUser.setEmail(user.getEmail());
         newUser.setPassword(user.getPassword());
         newUser.setUsername(user.getUsername());
+        newUser.setName(user.getName());
+        newUser.setLooking_for(user.getLooking_for());
         newUser = userRepository.save(newUser);
         if (newUser == null) {
             return null;

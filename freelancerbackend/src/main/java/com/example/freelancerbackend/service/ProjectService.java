@@ -76,12 +76,12 @@ public class ProjectService {
         System.out.println("SizeOfProjectEntities:");
         System.out.println(projectEntities);
         System.out.println(projectEntities.size());
-        if(projectEntities != null && projectEntities.size() > 0) {
+      //  if(projectEntities != null && projectEntities.size() > 0) {
             return Convertors.mapMyProjectsToResponse(projectEntities, "Fetched Successfully");
-        }
+        //}
         //  Set<Projects> projectEntities = projectRepository.findAllByEmpUsername(sessionUsername);
 
-        return null;
+        //return null;
     }
 
     public Map<String, Object> getMyBidDetails(String user_id) {
@@ -99,11 +99,9 @@ public class ProjectService {
         System.out.println("myBids:");
         System.out.println(myBids);
         System.out.println(myBids.size());
-        if(myBids != null && myBids.size() > 0) {
-            return Convertors.mapMyBidsToResponse(myBids, "Fetched Successfully");
-        }
 
-        return null;
+            return Convertors.mapMyBidsToResponse(myBids, "Fetched Successfully");
+
     }
 
     public Map<String, Object> getBidHeader(Long project_id) {

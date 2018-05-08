@@ -24,11 +24,12 @@ class DashboardPage extends React.Component {
         const {dispatch} = this.props;
         dispatch({type: "DASHBOARD"});
         const {user} = this.props;
+        console.log("DASHBOARD");
 
         RESTService.getMyProjectDetails(user.username)
             .then(
                 response => {
-
+                    console.log(response);
                     if (response["projects"].length > 0)
                         this.setState({my_project_details_status: true});
                     this.setState({my_project_details: response["projects"]});
@@ -36,7 +37,8 @@ class DashboardPage extends React.Component {
                     console.log(this.state.my_project_details);
                 },
                 error => {
-                    console.log("Error/fetchHomeProject:");
+
+                    console.log("Error/DASHBOARD:");
                     console.log(error);
                     localStorage.removeItem('user');
                     dispatch({type: "USERS_LOGOUT"});

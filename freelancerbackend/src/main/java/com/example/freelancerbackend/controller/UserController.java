@@ -105,6 +105,7 @@ public class UserController {
     @RequestMapping(path="/getOtherUser", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getOtherUser(@RequestBody Users user, HttpSession session)
     {
+        System.out.println("getOtherUsergetOtherUsergetOtherUsergetOtherUsergetOtherUser ");
         System.out.println(" Logged in User's username: " + session.getAttribute("username"));
         if (session.getAttribute("username") == null || session.getAttribute("username").toString().equals("")) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -195,4 +196,18 @@ public class UserController {
         return new ResponseEntity(updatedUser, HttpStatus.OK);
     }
 
+
+    @RequestMapping(path="/users/register", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> signUp(@RequestBody Users user, HttpSession session)
+    {
+        System.out.println(" Logged in User's username: " + session.getAttribute("username"));
+
+        User response = userService.registerUser(user);
+
+        if (response == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
 }

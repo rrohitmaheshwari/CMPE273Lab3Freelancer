@@ -37,8 +37,9 @@ class ViewProfilePage extends React.Component {
 
     getOtherUser(username){
         RESTService.getOtherUser(username).then((res) => {
-            console.log("###inside response:");
-            this.setState({profileUser : res.user})
+            console.log("###inside response:asdasd");
+            console.log(res);
+            this.setState({profileUser : res})
         });
     }
 

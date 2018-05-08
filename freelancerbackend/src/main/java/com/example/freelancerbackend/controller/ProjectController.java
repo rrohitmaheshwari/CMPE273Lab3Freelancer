@@ -3,6 +3,7 @@ package com.example.freelancerbackend.controller;
 import com.example.freelancerbackend.entity.Projects;
 
 import com.example.freelancerbackend.models.Bids;
+import com.example.freelancerbackend.models.Project;
 import com.example.freelancerbackend.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,6 +67,8 @@ public class ProjectController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         Map<String, Object> openProjectResponse = projectService.getMyProjectDetails(session.getAttribute("username").toString());
+
+
 
         return new ResponseEntity( openProjectResponse, HttpStatus.OK);
 

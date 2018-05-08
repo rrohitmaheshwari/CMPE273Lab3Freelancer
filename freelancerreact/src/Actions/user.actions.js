@@ -75,7 +75,7 @@ function register(user) {
                 error => {
                     console.log(error);
                     dispatch(failure(error));
-                    dispatch(alertActions.error(error));
+                    dispatch(alertActions.error('This username/email address is already in use!'));
 
                 }
             );
