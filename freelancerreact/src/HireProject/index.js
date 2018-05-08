@@ -27,6 +27,8 @@ class HireProject extends React.Component {
             bid_header: {
                 "bid_count": '',
                 "average_bid": '',
+                "complete_by":'',
+                "description": '',
             },
             showtable: false,
             bid_price: '0',
@@ -52,11 +54,12 @@ class HireProject extends React.Component {
         RESTService.getBidDetails(Project_ID)
             .then(
                 response => {
-                    console.log("getBidDetails");
-console.log(response.result);
-                    this.setState({"bid_table_data": response.result});
 
-                    if (response.result.length > 0)
+                    console.log("bid table");
+                    console.log(response);
+
+                    this.setState({"bid_table_data": response["projects"]});
+                    if (response["projects"].length > 0)
                         this.setState({"showtable": true});
                 },
                 error => {
@@ -74,12 +77,12 @@ console.log(response.result);
             .then(
                 response => {
 
-                    if (response.result.length === 0) {
+
+                    if (response.length === 0) {
                         dispatch({type: "HOME"});
                         history.push('/HomePage');  //home page if no project found
                     }
-                    this.setState({"project_details": response.result[0]});
-
+                    this.setState({"project_details": response});
                     if(this.state.project_details.filenames && this.state.project_details.filenames.indexOf(",") > 0)
                         this.setState({"filenames": this.state.project_details.filenames.split(",")});
                     else
@@ -102,8 +105,8 @@ console.log(response.result);
         RESTService.getBidHeader(Project_ID)
             .then(
                 response => {
-                    this.setState({"bid_header": response.result[0]});
-                    console.log(this.state.project_details);
+                    this.setState({bid_header: response["projects"][0]});
+                    console.log(response["projects"][0]);
                 },
                 error => {
                     console.log("Error/fetchHomeProject:");
@@ -112,7 +115,6 @@ console.log(response.result);
 
                 }
             );
-
 
     }
 
@@ -189,7 +191,7 @@ console.log(response.result);
                                     <div className="col-sm-5 col-sm-offset-0" id="ProjectDetailBoxEnd">
                                         <span>Expected</span>
                                         <br/><span
-                                        className="ProjectHeaderValue">{this.state.project_details.complete_by_shortdate}</span>
+                                        className="ProjectHeaderValue">{this.state.project_details.complete_by}</span>
 
                                     </div>
 
@@ -211,7 +213,7 @@ console.log(response.result);
                                         <br/>
                                         <span className="ProjectTitleSubheading"> Employer</span>
                                         <br/>
-                                        <span>{this.state.project_details.name}<br/>@{this.state.project_details.emp_username}</span>
+                                        <span>{this.state.project_details.name}<br/>@{this.state.project_details.empUsername}</span>
                                         <br/>
                                         <br/>
                                         <span className="ProjectTitleSubheading"> Skills Required</span>
@@ -222,7 +224,7 @@ console.log(response.result);
                                         <span>{
                                             this.state.filenames.map((data) =>
                                               <div key={data}>
-                                               <a target="_blank" href={`http://localhost:3001/project_files/${this.state.project_details.emp_username}/${data}`}>
+                                               <a target="_blank" href={`http://localhost:3001/project_files/${this.state.project_details.empUsername}/${data}`}>
                                                   {data}
                                                 </a>
                                                 <br/>

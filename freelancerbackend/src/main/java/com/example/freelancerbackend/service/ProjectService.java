@@ -167,4 +167,22 @@ public class ProjectService {
         return newBid;
     }
 
+    public Map<String, Object> getDetails(Long project_id) {
+
+        Optional<Projects> projectOpt = projectRepository.findById(project_id);
+
+        if ( !projectOpt.isPresent()) {
+            return null;
+        }
+
+        Projects projectDetails = projectOpt.get();
+        System.out.println(projectDetails);
+
+        if(projectDetails != null) {
+            return Convertors.mapBidTableToResponse(projectDetails, "Fetched Successfully");
+        }
+
+        return null;
+    }
+
 }

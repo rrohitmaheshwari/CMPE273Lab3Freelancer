@@ -79,31 +79,33 @@ class BidProject extends React.Component {
 
         const {dispatch} = this.props;
 
-        //
-        // RESTService.getBidDetails(Project_ID)
-        //     .then(
-        //         response => {
-        //
-        //             this.setState({"bid_table_data": response.result});
-        //             if (response.result.length > 0)
-        //                 this.setState({"showtable": true});
-        //         },
-        //         error => {
-        //             console.log("Error/fetchHomeProject:");
-        //             console.log(error);
-        //             localStorage.removeItem('user');
-        //             dispatch({type: "USERS_LOGOUT"});
-        //             RESTService.logout();
-        //             history.push('/Login');  //home page after session expire
-        //
-        //         }
-        //     );
+
+        RESTService.getBidDetails(Project_ID)
+            .then(
+                response => {
+
+                    console.log("bid table");
+                    console.log(response);
+
+                    this.setState({"bid_table_data": response["projects"]});
+                    if (response["projects"].length > 0)
+                        this.setState({"showtable": true});
+                },
+                error => {
+                    console.log("Error/fetchHomeProject:");
+                    console.log(error);
+                    localStorage.removeItem('user');
+                    dispatch({type: "USERS_LOGOUT"});
+                    RESTService.logout();
+                    history.push('/Login');  //home page after session expire
+
+                }
+            );
 
         RESTService.getprojectdetails(Project_ID)
             .then(
                 response => {
-            console.log("mid table");
-            console.log(response);
+
 
                     if (response.length === 0) {
                         dispatch({type: "HOME"});

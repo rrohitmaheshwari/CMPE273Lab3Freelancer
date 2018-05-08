@@ -126,6 +126,8 @@ public class Convertors {
                     project.setBudget_range  ( projectEntity.getBudget_range() );
                     project.setStatus        ( projectEntity.getStatus() );
                     project.setComplete_by   ( projectEntity.getComplete_by() );
+                    project.setFreelancer_username   ( projectEntity.getFreelancer_username() );
+
                     float averageBid = 0;
                     for (com.example.freelancerbackend.entity.Bids bidEntity : projectEntity.getBids()) {
                         averageBid += Float.parseFloat(bidEntity.getBid_price());
@@ -197,6 +199,30 @@ public class Convertors {
 
         Map<String, Object> openProjectResponse = new HashMap<>();
         openProjectResponse.put("projects", projectSetResponse);
+        openProjectResponse.put("message", message);
+
+        return openProjectResponse;
+    }
+
+public static Map<String, Object> mapBidTableToResponse(Projects projectEntity, String message) {
+
+        Set<Project> projectSetResponse = new HashSet<>();
+        Set<com.example.freelancerbackend.models.Bids> bidSetResponse = new HashSet<>();
+
+        com.example.freelancerbackend.models.Bids bid;
+        for (com.example.freelancerbackend.entity.Bids bidEntity : projectEntity.getBids()) {
+
+            bid = new com.example.freelancerbackend.models.Bids();
+            bid.setId(bidEntity.getId());
+            bid.setUsername(bidEntity.getUserEntity().getUsername());
+            bid.setBid_price(bidEntity.getBid_price());
+            bid.setDays_req(bidEntity.getDays_req());
+            bid.setName(bidEntity.getUserEntity().getName());
+            bidSetResponse.add(bid);
+        }
+
+        Map<String, Object> openProjectResponse = new HashMap<>();
+        openProjectResponse.put("projects", bidSetResponse);
         openProjectResponse.put("message", message);
 
         return openProjectResponse;

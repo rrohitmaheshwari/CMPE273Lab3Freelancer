@@ -133,18 +133,24 @@ public class ProjectController {
     {
 
 
-        System.out.println("asdapostbiddatasd");
-
-        System.out.println(bid.getBid_price());
-        System.out.println(bid.getDays_req());
-        System.out.println(bid.getProject_id());
-        System.out.println(bid.getUser_id());
-
         com.example.freelancerbackend.entity.Bids newBid = projectService.postBidData(bid);
         if (newBid == null) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity(newBid,HttpStatus.OK);
+    }
+
+    @RequestMapping(path="/getdetails", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getBidTable(@RequestBody Projects project, HttpSession session)
+    {
+
+        Map<String, Object> bidsMap = projectService.getDetails(project.getProject_id());
+
+        if (bidsMap == null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity(bidsMap,HttpStatus.OK);
     }
 }

@@ -173,16 +173,21 @@ function postBid(data) {
     return axiosPost(postProjectUrl, data);
 }
 
+//
+// function postFreelancer(data) {
+//     const requestOptions = {
+//         method: 'POST',
+//         headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+//         credentials: 'include',
+//         body: JSON.stringify({data})
+//     };
+//     return fetch(`${api}/project/postFreelancer`, requestOptions).then(handleResponse);
+//
+// }
 
 function postFreelancer(data) {
-    const requestOptions = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-        credentials: 'include',
-        body: JSON.stringify({data})
-    };
-    return fetch(`${api}/project/postFreelancer`, requestOptions).then(handleResponse);
-
+    let postProjectUrl = api + '/project/postFreelancer';
+    return axiosPost(postProjectUrl, data);
 }
 
 function logout() {
