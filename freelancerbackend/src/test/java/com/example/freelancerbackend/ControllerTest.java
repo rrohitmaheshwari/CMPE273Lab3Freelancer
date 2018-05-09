@@ -4,6 +4,7 @@ import com.example.freelancerbackend.controller.ProjectController;
 import com.example.freelancerbackend.controller.UserController;
 import com.example.freelancerbackend.models.User;
 import com.example.freelancerbackend.entity.Users;
+import com.example.freelancerbackend.service.ProjectService;
 import com.example.freelancerbackend.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,12 +27,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 public class ControllerTest {
 
 	@Autowired
-	private MockMvc mockMvcObject;
+	private MockMvc mockMvc;
 
 	@MockBean
 	private UserService userService;
 
-
+	@MockBean
+	private ProjectService profileService;
 
 	public User getUser() {
 		User mockUser = new User();
@@ -43,6 +45,7 @@ public class ControllerTest {
 	@Test
 	public void userAuthenticationTest() throws Exception {
 
+		//Mockito.when(userService.getUser(Mockito.any(User.class))).thenReturn("NOT_AVAILABLE");
 		Mockito.when(userService.login(Mockito.any(Users.class))).thenReturn(getUser());
 
 		String userJson = "{\"username\":\"Rohit\",\"password\":\"ro\"}";
@@ -52,7 +55,7 @@ public class ControllerTest {
 				.content(userJson)
 				.contentType(MediaType.APPLICATION_JSON);
 
-		MvcResult result = mockMvcObject.perform(requestBuilder).andReturn();
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
 		String expected = "{\n" +
                 "    \"username\": \"Rohit\",\n" +
@@ -88,7 +91,7 @@ public class ControllerTest {
                 .content(userJson)
                 .contentType(MediaType.APPLICATION_JSON);
 
-        MvcResult result = mockMvcObject.perform(requestBuilder).andReturn();
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
 
 
@@ -110,8 +113,8 @@ public class ControllerTest {
     @Test
     public void updateUserPhoneTest() throws Exception {
 
-        Mockito.when(userService.updateUserFields(Mockito.eq("TestUsername"),Mockito.any(Users.class), Mockito.eq("phone"))).thenReturn(getUpdatedUser());
-//  public Users updateUserFields(String username, Users user, String fieldToUpdate)
+        Mockito.when(userService.updateUserFields(Mockito.eq("TestUsername"),Mockito.any(Users.class),
+                Mockito.eq("phone"))).thenReturn(getUpdatedUser());
         String userJson = "{\"phone\":\"123123123\"}";
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/user/updatePhone")
@@ -120,7 +123,7 @@ public class ControllerTest {
                 .content(userJson)
                 .contentType(MediaType.APPLICATION_JSON);
 
-        MvcResult result = mockMvcObject.perform(requestBuilder).andReturn();
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
         String expected = "{\n" +
                 "    \"username\": \"TestUsername\",\n" +
@@ -143,8 +146,9 @@ public class ControllerTest {
     @Test
     public void updateUserSummaryTest() throws Exception {
 
-        Mockito.when(userService.updateUserFields(Mockito.eq("TestUsername"),Mockito.any(Users.class), Mockito.eq("summary"))).thenReturn(getUpdatedSummaryUser());
-//  public Users updateUserFields(String username, Users user, String fieldToUpdate)
+        Mockito.when(userService.updateUserFields(Mockito.eq("TestUsername"),
+                Mockito.any(Users.class), Mockito.eq("summary"))).thenReturn(getUpdatedSummaryUser());
+
         String userJson = "{\"summary\":\"Summary\"}";
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/user/updateSummary")
@@ -153,7 +157,7 @@ public class ControllerTest {
                 .content(userJson)
                 .contentType(MediaType.APPLICATION_JSON);
 
-        MvcResult result = mockMvcObject.perform(requestBuilder).andReturn();
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
         String expected = "{\n" +
                 "    \"username\": \"TestUsername\",\n" +
@@ -176,7 +180,8 @@ public class ControllerTest {
     @Test
     public void updateUserSkillsTest() throws Exception {
 
-        Mockito.when(userService.updateUserFields(Mockito.eq("TestUsername"),Mockito.any(Users.class), Mockito.eq("skills"))).thenReturn(getUpdatedSkillsUser());
+        Mockito.when(userService.updateUserFields(Mockito.eq("TestUsername"),
+                Mockito.any(Users.class), Mockito.eq("skills"))).thenReturn(getUpdatedSkillsUser());
 
         String userJson = "{\"summary\":\"Summary\"}";
         RequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -186,7 +191,7 @@ public class ControllerTest {
                 .content(userJson)
                 .contentType(MediaType.APPLICATION_JSON);
 
-        MvcResult result = mockMvcObject.perform(requestBuilder).andReturn();
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
         String expected = "{\n" +
                 "    \"username\": \"TestUsername\",\n" +
